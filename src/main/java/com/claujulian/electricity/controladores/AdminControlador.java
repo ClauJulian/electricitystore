@@ -51,16 +51,17 @@ public class AdminControlador {
 
 
     @PostMapping("/modificar/{id}")
-    public String modificar(@PathVariable UUID id, @RequestParam String nombre, @RequestParam String email, 
+    public String modificar(@PathVariable UUID id, @RequestParam String nombre, @RequestParam String apellido, @RequestParam String email, 
         @RequestParam String password, @RequestParam String password2, ModelMap modelo) {
         
             try{
-                usuarioServicio.actualizar(id, nombre, email, password, password2);
+                usuarioServicio.actualizar(id, nombre, apellido, email, password, password2);
                 modelo.put("exito", "El usuario fue actualizado correctamente.");
                 return "redirect:/admin/usuarios";
             } catch (MiException ex) {
                 modelo.put("error", ex.getMessage());
                 modelo.put("nombre", nombre);
+                modelo.put("apellido", apellido);
                 modelo.put("email", email);
                 return "usuario_modificar.html";
             }

@@ -13,6 +13,7 @@
                             <tr>
                                 <th scope="col">Id del Usuario</th>
                                 <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
                                 <th scope="col">Rol</th>
                                 <th scope="col">Cambiar Rol</th>
                                 <th scope="col">Modificar</th>
@@ -22,6 +23,7 @@
                             <tr>
                                 <th scope="row" th:text="${usuario.id}"></th>
                                 <td th:text="${usuario.nombre}"></td>
+                                <td th:text="${usuario.apellido}"></td>
                                 <td th:text="${usuario.rol}"></td>
                                 <td>
                                     <a th:href="@{/admin/modificarRol/__${usuario.id}__}" class="btn btn-warning btn-sm">

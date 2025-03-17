@@ -33,12 +33,13 @@ public class UsuarioServicio implements UserDetailsService {
 
 
     @Transactional
-    public void registrar(String nombre, String email, String password, String password2) throws MiException {
+    public void registrar(String nombre, String apellido, String email, String password, String password2) throws MiException {
 
-        validar(nombre, email, password, password2);
+        validar(nombre, apellido, email, password, password2);
         Usuario usuario = new Usuario();
 
         usuario.setNombre(nombre);
+        usuario.setApellido(apellido);;
         usuario.setEmail(email);
         usuario.setPassword(new BCryptPasswordEncoder().encode(password));
         usuario.setRol(Rol.USER);
@@ -48,13 +49,15 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizar(UUID idUsuario, String nombre, String email, String password,
+    public void actualizar(UUID idUsuario, String nombre, String apellido, String email, String password,
             String password2) throws MiException {
-        validar(nombre, email, password, password2);
+        validar(nombre, apellido, email, password, password2);
+        
         Optional<Usuario> respuesta = usuarioRepositorio.findById(idUsuario);
         if (respuesta.isPresent()) {
             Usuario usuario = respuesta.get();
             usuario.setNombre(nombre);
+            usuario.setApellido(apellido);;
             usuario.setEmail(email);
             usuario.setPassword(new BCryptPasswordEncoder().encode(password));
 
@@ -62,10 +65,13 @@ public class UsuarioServicio implements UserDetailsService {
         }
     }
 
-    private void validar(String nombre, String email, String password, String password2) throws MiException {
+    private void validar(String nombre, String apellido, String email, String password, String password2) throws MiException {
 
         if (nombre.isEmpty() || nombre == null) {
             throw new MiException("el nombre no puede ser nulo o estar vacío");
+        }
+        if (apellido.isEmpty() || apellido == null) {
+            throw new MiException("el apellido no puede ser nulo o estar vacío");
         }
         if (email.isEmpty() || email == null) {
             throw new MiException("el email no puede ser nulo o estar vacío");

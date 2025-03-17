@@ -36,12 +36,13 @@ public class PortalControlador {
     }
 
      @PostMapping("/registro")
-    public String registro(@RequestParam String nombre, @RequestParam String email, @RequestParam String password, @RequestParam String password2, ModelMap modelo) {
+    public String registro(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String email, @RequestParam String password, @RequestParam String password2, ModelMap modelo) {
 
         try {
-            usuarioServicio.registrar(nombre, email, password, password2);
+            usuarioServicio.registrar(nombre, apellido, email, password, password2);
             modelo.put("exito", "El usuario se registro correctamente");
             modelo.put("nombre", nombre);
+            modelo.put("apellido", apellido);
             modelo.put("email", email);
            
             return "index.html";
@@ -87,16 +88,20 @@ public class PortalControlador {
 
      @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/perfil/{id}")
-    public String actualizar( @PathVariable UUID id, @RequestParam String nombre, @RequestParam String email, 
+    public String actualizar( @PathVariable UUID id, @RequestParam String nombre, @RequestParam String apellido, @RequestParam String email, 
         @RequestParam String password, @RequestParam String password2, ModelMap modelo) {
         
             try{
-                usuarioServicio.actualizar(id, nombre, email, password, password2);
+                usuarioServicio.actualizar(id, nombre, apellido, email, password, password2);
                 modelo.put("exito", "El usuario fue actualizado correctamente.");
+                modelo.put("nombre", nombre);
+                modelo.put("apellido", apellido);
+                modelo.put("email", email);
                 return "inicio.html";
             } catch (MiException ex) {
                 modelo.put("error", ex.getMessage());
                 modelo.put("nombre", nombre);
+                modelo.put("apellido", apellido);
                 modelo.put("email", email);
                 return "usuario_modificar.html";
             }
