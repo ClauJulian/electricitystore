@@ -1,8 +1,8 @@
-package com.claujulian.security.entidades;
+package com.claujulian.electricity.entidades;
 
 import java.util.UUID;
 
-import com.claujulian.security.enumeraciones.Rol;
+import com.claujulian.electricity.enumeraciones.Rol;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

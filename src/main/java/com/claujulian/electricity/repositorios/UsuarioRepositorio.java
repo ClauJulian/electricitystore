@@ -1,4 +1,4 @@
-package com.claujulian.security.repositorios;
+package com.claujulian.electricity.repositorios;
 
 import java.util.UUID;
 
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.claujulian.security.entidades.Usuario;
+import com.claujulian.electricity.entidades.Usuario;
 
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<Usuario, UUID> {

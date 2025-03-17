@@ -1,4 +1,4 @@
-package com.claujulian.security;
+package com.claujulian.electricity;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.claujulian.security.controladores;
+package com.claujulian.electricity.controladores;
 
 
 import java.util.List;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.claujulian.security.entidades.Usuario;
-import com.claujulian.security.excepciones.MiException;
-import com.claujulian.security.servicios.UsuarioServicio;
+import com.claujulian.electricity.entidades.Usuario;
+import com.claujulian.electricity.excepciones.MiException;
+import com.claujulian.electricity.servicios.UsuarioServicio;
 
 @Controller
 @RequestMapping("/admin")

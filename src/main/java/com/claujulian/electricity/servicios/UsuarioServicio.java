@@ -1,4 +1,4 @@
-package com.claujulian.security.servicios;
+package com.claujulian.electricity.servicios;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.claujulian.security.entidades.Usuario;
-import com.claujulian.security.enumeraciones.Rol;
-import com.claujulian.security.excepciones.MiException;
-import com.claujulian.security.repositorios.UsuarioRepositorio;
+import com.claujulian.electricity.entidades.Usuario;
+import com.claujulian.electricity.enumeraciones.Rol;
+import com.claujulian.electricity.excepciones.MiException;
+import com.claujulian.electricity.repositorios.UsuarioRepositorio;
 
 import jakarta.servlet.http.HttpSession;
 

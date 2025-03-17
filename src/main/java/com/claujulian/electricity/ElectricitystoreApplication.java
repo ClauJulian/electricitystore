@@ -1,13 +1,13 @@
-package com.claujulian.security;
+package com.claujulian.electricity;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SecurityApplication {
+public class ElectricitystoreApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SecurityApplication.class, args);
+		SpringApplication.run(ElectricitystoreApplication.class, args);
 	}
 
 }
