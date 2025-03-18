@@ -1,8 +1,10 @@
 package com.claujulian.electricity.servicios;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
+
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +13,7 @@ import com.claujulian.electricity.entidades.Articulo;
 import com.claujulian.electricity.entidades.Fabrica;
 import com.claujulian.electricity.excepciones.MiException;
 import com.claujulian.electricity.repositorios.ArticuloRepositorio;
-import com.claujulian.electricity.repositorios.FabricaRepositorio;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +24,6 @@ public class ArticuloServicio {
     private final ArticuloRepositorio articuloRepositorio;
     private final FabricaServicio fabricaServicio;
 
-     private static final AtomicInteger atomicInteger = new AtomicInteger(1); // Atributo de clase
 
 // CREATE
 @Transactional
@@ -32,12 +33,10 @@ public void crearArticulo(String nombre, String descripcion, UUID idFabrica) thr
    
     Articulo articulo = new Articulo();
 
-    articulo.setNroArticulo(atomicInteger.incrementAndGet());
     articulo.setNombreArticulo(nombre);;
     articulo.setDescripcionArticulo(descripcion);;
     articulo.setFabrica(fabrica);
    
-
     articuloRepositorio.save(articulo);
 }
 
@@ -57,7 +56,22 @@ public void modificarArticulo(String nombreArticulo, String descripcionArticulo,
     articuloRepositorio.save(articulo);}
 }
 
+ // READ
+    @Transactional(readOnly = true)
+    public List<Articulo> listarLibros() {
+        List<Articulo> articulos = new ArrayList<Articulo>();
+        
+        articulos = articuloRepositorio.findAll();
 
+        return articulos;
+    }
+
+    // READ
+    @Transactional(readOnly = true)
+    public Articulo buscarPorUUID(UUID idArticulo){
+        return articuloRepositorio.getReferenceById(idArticulo);
+    }
+    
     // EXTRAS
     private void validar(String nombre, String descripcion, UUID idFabrica) throws MiException{
         if (nombre.isEmpty() || nombre == null) {

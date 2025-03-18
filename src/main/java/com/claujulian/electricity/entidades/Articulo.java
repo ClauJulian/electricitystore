@@ -22,8 +22,8 @@ public class Articulo {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idArticulo;
 
-    @Column(nullable = false)
-    private Integer nroArticulo;
+    @Column(unique = true, nullable = false)
+    private Long nroArticulo;
 
     @Column(nullable=false)
     private String nombreArticulo;
@@ -32,7 +32,7 @@ public class Articulo {
     private String descripcionArticulo;
 
     @ManyToOne
-    @JoinColumn(name="idFabrica")
+    @JoinColumn(name="idFabrica" , nullable = false)
     private Fabrica fabrica;
 
 
