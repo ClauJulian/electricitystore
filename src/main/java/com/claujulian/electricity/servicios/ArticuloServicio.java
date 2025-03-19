@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +14,7 @@ import com.claujulian.electricity.entidades.Fabrica;
 import com.claujulian.electricity.excepciones.MiException;
 import com.claujulian.electricity.repositorios.ArticuloRepositorio;
 
-
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -24,7 +24,20 @@ public class ArticuloServicio {
     private final ArticuloRepositorio articuloRepositorio;
     private final FabricaServicio fabricaServicio;
 
+    private AtomicInteger atomicNroArticulo;
 
+
+
+@PostConstruct
+    public void init() {
+        int maxNroArticulo = articuloRepositorio.findAll()
+                .stream()
+                .mapToInt(Articulo::getNroArticulo)
+                .max()
+                .orElse(0);
+        atomicNroArticulo = new AtomicInteger(maxNroArticulo);
+    }
+        
 // CREATE
 @Transactional
 public void crearArticulo(String nombre, String descripcion, UUID idFabrica) throws MiException {
@@ -32,7 +45,9 @@ public void crearArticulo(String nombre, String descripcion, UUID idFabrica) thr
     Fabrica fabrica = fabricaServicio.buscarPorUUID(idFabrica);
    
     Articulo articulo = new Articulo();
-
+    int nroArticulo = atomicNroArticulo.incrementAndGet();
+    
+    articulo.setNroArticulo(nroArticulo);
     articulo.setNombreArticulo(nombre);;
     articulo.setDescripcionArticulo(descripcion);;
     articulo.setFabrica(fabrica);
@@ -42,7 +57,7 @@ public void crearArticulo(String nombre, String descripcion, UUID idFabrica) thr
 
 // UPDATE
 @Transactional
-public void modificarArticulo(String nombreArticulo, String descripcionArticulo, UUID idArticulo, UUID idFabrica){
+public void modificarArticulo(UUID idArticulo,String nombreArticulo, String descripcionArticulo,  UUID idFabrica){
    
    Optional<Articulo> articuloAActualizar = articuloRepositorio.findById(idArticulo);
 
@@ -58,7 +73,7 @@ public void modificarArticulo(String nombreArticulo, String descripcionArticulo,
 
  // READ
     @Transactional(readOnly = true)
-    public List<Articulo> listarLibros() {
+    public List<Articulo> listarArticulos() {
         List<Articulo> articulos = new ArrayList<Articulo>();
         
         articulos = articuloRepositorio.findAll();

@@ -22,8 +22,7 @@ public class Articulo {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idArticulo;
 
-    @Column(unique = true, nullable = false)
-    private Long nroArticulo;
+    private int nroArticulo;
 
     @Column(nullable=false)
     private String nombreArticulo;
