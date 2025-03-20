@@ -28,15 +28,19 @@ public class ArticuloControlador {
 
     private final ArticuloServicio articuloServicio;
 
+    private final FabricaServicio fabricaServicio;
+
     @GetMapping("/registrar")
-    public String registrar() {
+    public String registrar(ModelMap model) {
+        List<Fabrica> fabricas = fabricaServicio.listarFabricas();
+        model.addAttribute("fabricas", fabricas);
         return "articulo_form.html";
     }
 
     @PostMapping("/registro")
-    public String registro(@RequestParam String nombre, @RequestParam String descripcion, @RequestParam UUID idFabrica, ModelMap model) {
+    public String registro(@RequestParam String nombreArticulo, @RequestParam String descripcionArticulo, @RequestParam String idFabrica, ModelMap model) {
         try {
-            articuloServicio.crearArticulo(nombre, descripcion, idFabrica);
+            articuloServicio.crearArticulo(nombreArticulo, descripcionArticulo, idFabrica);
             model.addAttribute("exito", "¡La Fabrica se ha creado con exito!");
         } catch (MiException me) {
             model.addAttribute("error", "¡La Fabrica debe tener un nombre!");
@@ -59,18 +63,19 @@ public class ArticuloControlador {
     @GetMapping("/modificar/{id}")
     public String modificar(@PathVariable UUID id, ModelMap modelo) {
         modelo.put("articulo", articuloServicio.buscarPorUUID(id));
+        modelo.addAttribute("fabricas", fabricaServicio.listarFabricas()); 
         return "articulo_modificar.html";
     }
 
 
-    @PostMapping("/modificar/{id}")
-    public String modificar(@PathVariable UUID idArticulo, String nombre, String descripcion, UUID idFabrica, ModelMap modelo) throws MiException {
+    @PostMapping("/modificar/{idArticulo}")
+    public String modificar(@PathVariable UUID idArticulo, String nombreArticulo, String descripcionArticulo, UUID idFabrica, ModelMap modelo) throws MiException {
         try {
             if (idArticulo == null || idFabrica == null) {
                 throw new MiException("Debe seleccionar un artículo y una fábrica válidos.");
             }
 
-            articuloServicio.modificarArticulo(idArticulo, nombre, descripcion, idFabrica);
+            articuloServicio.modificarArticulo(idArticulo, nombreArticulo, descripcionArticulo, idFabrica);
             return "redirect:../lista";
 
         } catch(MiException ex) {

@@ -40,9 +40,10 @@ public class ArticuloServicio {
         
 // CREATE
 @Transactional
-public void crearArticulo(String nombre, String descripcion, UUID idFabrica) throws MiException {
-    validar(nombre, descripcion, idFabrica);
-    Fabrica fabrica = fabricaServicio.buscarPorUUID(idFabrica);
+public void crearArticulo(String nombre, String descripcion, String idFabrica) throws MiException {
+    UUID id_fabrica = UUID.fromString(idFabrica);
+    validar(nombre, descripcion, id_fabrica);
+    Fabrica fabrica = fabricaServicio.buscarPorUUID(id_fabrica);
    
     Articulo articulo = new Articulo();
     int nroArticulo = atomicNroArticulo.incrementAndGet();
@@ -59,6 +60,7 @@ public void crearArticulo(String nombre, String descripcion, UUID idFabrica) thr
 @Transactional
 public void modificarArticulo(UUID idArticulo,String nombreArticulo, String descripcionArticulo,  UUID idFabrica){
    
+   /*  UUID id_fabrica = UUID.fromString(idFabrica); */
    Optional<Articulo> articuloAActualizar = articuloRepositorio.findById(idArticulo);
 
    if(articuloAActualizar.isPresent()){
