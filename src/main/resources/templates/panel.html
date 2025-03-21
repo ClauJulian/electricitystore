@@ -13,10 +13,24 @@
             </div>
         </header>
         
-        <main class="container d-flex align-items-center justify-content-center vh-80">
-            <div class="p-4 bg-light shadow rounded">
-                <h2 class="text-center">Usuario Administrador</h2>
-                <p class="text-center">Puede cambiar los datos y el Rol de cada Usuario.</p>
+        <main class="container d-flex align-items-center justify-content-center min-vh-100">
+            <div class="container mt-4">
+                <div class="row row-cols-2 row-cols-lg-4 g-4">
+                    <div class="col d-flex" th:each="articulo : ${articulos}">
+                        <div class="card h-100 w-100">
+                            <img class="card-img-top" th:src="@{/imagen/articulo/__${articulo.idArticulo}__}" alt="Img Articulo">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${articulo.nombreArticulo}"></h5>
+                                <h6 class="card-subtitle mb-2 text-body-secondary" th:text="${articulo.fabrica.nombreFabrica}"></h6>
+                                <p class="card-text"th:text="${articulo.descripcionArticulo}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mantiene la vista siempre en 4 columnas generando tarjetas invisibles para los faltantes a 4 -->
+                    <div class="col d-flex" th:if="${#lists.size(articulos) % 4 != 0}" th:each="i : ${#numbers.sequence(1, 4 - (#lists.size(articulos) % 4))}">
+                        <div class="card h-100 w-100 invisible"></div>
+                    </div>
+                </div>
             </div>
         </main>
 

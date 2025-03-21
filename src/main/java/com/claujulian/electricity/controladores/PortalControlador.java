@@ -1,5 +1,6 @@
 package com.claujulian.electricity.controladores;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +13,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.claujulian.electricity.entidades.Articulo;
 import com.claujulian.electricity.entidades.Usuario;
 import com.claujulian.electricity.excepciones.MiException;
+import com.claujulian.electricity.servicios.ArticuloServicio;
 import com.claujulian.electricity.servicios.UsuarioServicio;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
 @Controller // Esta clase es un Controlador
 @RequestMapping("/") 
+@RequiredArgsConstructor
 public class PortalControlador {
 
-    @Autowired
-    private UsuarioServicio usuarioServicio;
+    private final UsuarioServicio usuarioServicio;
+    private final ArticuloServicio articuloServicio;
 
     @GetMapping("/") // GET /
     public String index() {
@@ -62,11 +67,14 @@ public class PortalControlador {
 
    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/inicio")
-    public String inicio(HttpSession session) {
+    public String inicio(HttpSession session, ModelMap model) {
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        List<Articulo> articulos = articuloServicio.listarArticulos();
+        
         if (logueado.getRol().toString().equals("ADMIN")) {
             return "redirect:/admin/dashboard";
         }
+        model.addAttribute("articulos", articulos);
         return "inicio.html";
     }
 

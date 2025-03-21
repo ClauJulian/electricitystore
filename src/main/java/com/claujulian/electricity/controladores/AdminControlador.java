@@ -13,19 +13,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.claujulian.electricity.entidades.Articulo;
 import com.claujulian.electricity.entidades.Usuario;
 import com.claujulian.electricity.excepciones.MiException;
+import com.claujulian.electricity.servicios.ArticuloServicio;
 import com.claujulian.electricity.servicios.UsuarioServicio;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class AdminControlador {
 
-    @Autowired
-    private UsuarioServicio usuarioServicio;
+    private final UsuarioServicio usuarioServicio;
+    private final ArticuloServicio articuloServicio;
     
     @GetMapping("/dashboard")
-    public String panelAdministrativo(){
+    public String panelAdministrativo(ModelMap model){
+        List<Articulo> articulos = articuloServicio.listarArticulos();
+        model.addAttribute("articulos", articulos);
+
         return "panel.html";
     }
 

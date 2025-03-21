@@ -22,21 +22,24 @@
                 </div>
             </div>
         </header>
-        <main class="container d-flex align-items-center justify-content-center vh-80">
-            
+        <main class="container d-flex align-items-center justify-content-center min-vh-100">
             <div class="container mt-4">
-                <main class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                    <div class="col" v-for="i in 10">
-                        <div class="card h-100">
-                            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Imagen {{ i }}">
+                <div class="row row-cols-2 row-cols-lg-4 g-4">
+                    <div class="col d-flex" th:each="articulo : ${articulos}">
+                        <div class="card h-100 w-100">
+                            <img class="card-img-top" th:src="@{/imagen/articulo/__${articulo.idArticulo}__}" alt="Img Articulo">
                             <div class="card-body">
-                                <h5 class="card-title">Imagen {{ i }}</h5>
+                                <h5 class="card-title" th:text="${articulo.nombreArticulo}"></h5>
+                                <p class="card-text"th:text="${articulo.descripcionArticulo}"></p>
                             </div>
                         </div>
                     </div>
-                </main>
+                    <!-- Mantiene la vista siempre en 4 columnas generando tarjetas invisibles para los faltantes a 4 -->
+                    <div class="col d-flex" th:if="${#lists.size(articulos) % 4 != 0}" th:each="i : ${#numbers.sequence(1, 4 - (#lists.size(articulos) % 4))}">
+                        <div class="card h-100 w-100 invisible"></div>
+                    </div>
+                </div>
             </div>
-
         </main>
         
         

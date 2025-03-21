@@ -62,9 +62,12 @@ public class ArticuloControlador {
      
     
     @GetMapping("/modificar/{id}")
-    public String modificar(@PathVariable UUID id, ModelMap modelo) {
-        modelo.put("articulo", articuloServicio.buscarPorUUID(id));
-        modelo.addAttribute("fabricas", fabricaServicio.listarFabricas()); 
+    public String modificar(@PathVariable UUID id, ModelMap model) {
+        Articulo articulo = articuloServicio.buscarPorUUID(id);
+        model.put("articulo", articulo);
+        model.addAttribute("fabricas", fabricaServicio.listarFabricas()); 
+        model.addAttribute("fabricaSeleccionada", articulo.getFabrica().getIdFabrica());  
+        
         return "articulo_modificar.html";
     }
 
