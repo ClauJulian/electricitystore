@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.claujulian.electricity.entidades.Articulo;
 import com.claujulian.electricity.entidades.Fabrica;
@@ -38,12 +39,12 @@ public class ArticuloControlador {
     }
 
     @PostMapping("/registro")
-    public String registro(@RequestParam String nombreArticulo, @RequestParam String descripcionArticulo, @RequestParam String idFabrica, ModelMap model) {
+    public String registro(MultipartFile archivo , @RequestParam String nombreArticulo, @RequestParam String descripcionArticulo, @RequestParam String idFabrica,  ModelMap model) {
         try {
-            articuloServicio.crearArticulo(nombreArticulo, descripcionArticulo, idFabrica);
-            model.addAttribute("exito", "¡La Fabrica se ha creado con exito!");
+            articuloServicio.crearArticulo(archivo, nombreArticulo, descripcionArticulo, idFabrica);
+            model.addAttribute("exito", "¡El artículo se ha creado con exito!");
         } catch (MiException me) {
-            model.addAttribute("error", "¡La Fabrica debe tener un nombre!");
+            model.addAttribute("error", "¡El articulo debe tener un nombre!");
             Logger.getLogger(ArticuloControlador.class.getName()).log(Level.SEVERE, null, me);
             return "articulo_form.html";
         }
@@ -69,13 +70,13 @@ public class ArticuloControlador {
 
 
     @PostMapping("/modificar/{idArticulo}")
-    public String modificar(@PathVariable UUID idArticulo, String nombreArticulo, String descripcionArticulo, UUID idFabrica, ModelMap modelo) throws MiException {
+    public String modificar(MultipartFile archivo, @PathVariable UUID idArticulo, String nombreArticulo, String descripcionArticulo, UUID idFabrica, ModelMap modelo) throws MiException {
         try {
             if (idArticulo == null || idFabrica == null) {
                 throw new MiException("Debe seleccionar un artículo y una fábrica válidos.");
             }
 
-            articuloServicio.modificarArticulo(idArticulo, nombreArticulo, descripcionArticulo, idFabrica);
+            articuloServicio.modificarArticulo(archivo, idArticulo, nombreArticulo, descripcionArticulo, idFabrica);
             return "redirect:../lista";
 
         } catch(MiException ex) {

@@ -23,10 +23,20 @@
             </div>
         </header>
         <main class="container d-flex align-items-center justify-content-center vh-80">
-            <div class="p-4 bg-light shadow rounded">
-                <h2 class="text-center">Usuario User</h2>
-                <p class="text-center">Puede modificar sus datos de perfil.</p>
+            
+            <div class="container mt-4">
+                <main class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <div class="col" v-for="i in 10">
+                        <div class="card h-100">
+                            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Imagen {{ i }}">
+                            <div class="card-body">
+                                <h5 class="card-title">Imagen {{ i }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </main>
             </div>
+
         </main>
         
         

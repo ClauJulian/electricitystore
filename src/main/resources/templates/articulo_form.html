@@ -5,7 +5,7 @@
         <nav th:replace="~{fragments/navbar :: nav}"></nav>
         <div class="container-fluid m-5 contenedor">
 
-            <form class="formulario" th:action="@{/articulo/registro}" method="POST">
+            <form class="formulario" th:action="@{/articulo/registro}" method="POST" enctype="multipart/form-data">
                
                 <div th:replace="~{fragments/mensajeEE :: div}"></div>
                 <div class="form-group my-3">
@@ -17,14 +17,16 @@
                 </div>
                 
                 <div class="form-group my-3">
+                    <input type="file" class="form-control" name="archivo">
+                </div>
+
+                <div class="form-group my-3">
 
                     <select name="idFabrica">
-
                         <option>Seleccionar Fábrica</option>
                         <option th:each="fabrica : ${fabricas}"
                                 th:value="${fabrica.idFabrica}"
                                 th:text="${fabrica.nombreFabrica}">
-
                     </select>
                 </div>
 

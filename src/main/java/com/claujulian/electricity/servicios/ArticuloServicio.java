@@ -8,9 +8,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.claujulian.electricity.entidades.Articulo;
 import com.claujulian.electricity.entidades.Fabrica;
+import com.claujulian.electricity.entidades.Imagen;
 import com.claujulian.electricity.excepciones.MiException;
 import com.claujulian.electricity.repositorios.ArticuloRepositorio;
 
@@ -23,6 +25,7 @@ public class ArticuloServicio {
 
     private final ArticuloRepositorio articuloRepositorio;
     private final FabricaServicio fabricaServicio;
+    private final ImagenServicio imagenServicio;
 
     private AtomicInteger atomicNroArticulo;
 
@@ -40,7 +43,7 @@ public class ArticuloServicio {
         
 // CREATE
 @Transactional
-public void crearArticulo(String nombre, String descripcion, String idFabrica) throws MiException {
+public void crearArticulo(MultipartFile archivo, String nombre, String descripcion, String idFabrica) throws MiException {
     UUID id_fabrica = UUID.fromString(idFabrica);
     validar(nombre, descripcion, id_fabrica);
     Fabrica fabrica = fabricaServicio.buscarPorUUID(id_fabrica);
@@ -53,12 +56,15 @@ public void crearArticulo(String nombre, String descripcion, String idFabrica) t
     articulo.setDescripcionArticulo(descripcion);;
     articulo.setFabrica(fabrica);
    
+    Imagen imagen = imagenServicio.guardar(archivo);
+        articulo.setImagen(imagen);
+
     articuloRepositorio.save(articulo);
 }
 
 // UPDATE
 @Transactional
-public void modificarArticulo(UUID idArticulo,String nombreArticulo, String descripcionArticulo,  UUID idFabrica){
+public void modificarArticulo(MultipartFile archivo, UUID idArticulo,String nombreArticulo, String descripcionArticulo,  UUID idFabrica) throws MiException{
    
    /*  UUID id_fabrica = UUID.fromString(idFabrica); */
    Optional<Articulo> articuloAActualizar = articuloRepositorio.findById(idArticulo);
@@ -70,6 +76,14 @@ public void modificarArticulo(UUID idArticulo,String nombreArticulo, String desc
     articulo.setNombreArticulo(nombreArticulo);
     articulo.setDescripcionArticulo(descripcionArticulo);
     articulo.setFabrica(fabricaServicio.buscarPorUUID(idFabrica));
+    
+    UUID idImagen = null;
+    if (articulo.getImagen() != null) {
+        idImagen = articulo.getImagen().getId();
+    }
+    Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
+    articulo.setImagen(imagen);
+    
     articuloRepositorio.save(articulo);}
 }
 
