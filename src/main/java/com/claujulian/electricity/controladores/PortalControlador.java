@@ -72,6 +72,7 @@ public class PortalControlador {
         List<Articulo> articulos = articuloServicio.listarArticulos();
         
         if (logueado.getRol().toString().equals("ADMIN")) {
+            model.addAttribute("articulos", articulos);
             return "redirect:/admin/dashboard";
         }
         model.addAttribute("articulos", articulos);

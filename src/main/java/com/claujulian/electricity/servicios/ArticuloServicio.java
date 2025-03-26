@@ -66,25 +66,24 @@ public void crearArticulo(MultipartFile archivo, String nombre, String descripci
 @Transactional
 public void modificarArticulo(MultipartFile archivo, UUID idArticulo,String nombreArticulo, String descripcionArticulo,  UUID idFabrica) throws MiException{
    
-   /*  UUID id_fabrica = UUID.fromString(idFabrica); */
    Optional<Articulo> articuloAActualizar = articuloRepositorio.findById(idArticulo);
 
    if(articuloAActualizar.isPresent()){
-    Articulo articulo = new Articulo();
-    articulo.setIdArticulo(articuloAActualizar.get().getIdArticulo());
-    articulo.setNroArticulo(articuloAActualizar.get().getNroArticulo());
-    articulo.setNombreArticulo(nombreArticulo);
-    articulo.setDescripcionArticulo(descripcionArticulo);
-    articulo.setFabrica(fabricaServicio.buscarPorUUID(idFabrica));
+   
+    articuloAActualizar.get().setNombreArticulo(nombreArticulo);
+    articuloAActualizar.get().setDescripcionArticulo(descripcionArticulo);
+    articuloAActualizar.get().setFabrica(fabricaServicio.buscarPorUUID(idFabrica));
     
-    UUID idImagen = null;
-    if (articulo.getImagen() != null) {
-        idImagen = articulo.getImagen().getId();
-    }
-    Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
-    articulo.setImagen(imagen);
-    
-    articuloRepositorio.save(articulo);}
+   
+    UUID idImagen = articuloAActualizar.get().getImagen().getId();;
+
+
+    if(!archivo.isEmpty()){
+        Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
+        articuloAActualizar.get().setImagen(imagen);
+       
+    }       
+    articuloRepositorio.save(articuloAActualizar.get());}
 }
 
  // READ

@@ -9,23 +9,23 @@
             <table class="table table-dark">
                 <thead>
                     <tr>
-                        <th scope="col">ID Artículo</th>
+                        <th sec:authorize="hasRole('ADMIN')" scope="col">ID Artículo</th>
                         <th scope="col">NRO Artículo</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Descripción</th>
-                        <th scope="col">ID Fábrica</th>
-                        <th scope="col">Acciones</th>
+                        <th scope="col">Nombre Fábrica</th>
+                        <th sec:authorize="hasRole('ADMIN')"  scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody th:each="articulo : ${articulos}"> 
                     <tr>
-                        <th scope="row" th:text="${articulo.idArticulo}"></th>
+                        <th sec:authorize="hasRole('ADMIN')" scope="row" th:text="${articulo.idArticulo}"></th>
                         <td th:text="${articulo.nroArticulo}"></td>
                         <td th:text="${articulo.nombreArticulo}"></td>
                         <td th:text="${articulo.descripcionArticulo}"></td>
-                        <td th:text="${articulo.fabrica.idFabrica}"></td>
+                        <td th:text="${articulo.fabrica.nombreFabrica}"></td>
                         <td>
-                            <a th:href= "@{/articulo/modificar/__${articulo.idArticulo}__}"><i class="fas fa-feather-alt">  </i> Modificar </a>
+                            <a sec:authorize="hasRole('ADMIN')" th:href= "@{/articulo/modificar/__${articulo.idArticulo}__}"><i class="fas fa-feather-alt">  </i> Modificar </a>
                         </td>
 
                     </tr>

@@ -1,54 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="~{fragments/head :: head}"></head>
-    <body>
+    <body class="d-flex flex-column min-vh-100">
+    
         <nav th:replace="~{fragments/navbar :: nav}"></nav>
-          <!-- Mensajes -->
-          <div th:replace="~{fragments/mensajeEE :: div}" class="mt-3"></div>
-        <div class="container-fluid m-5 contenedor">
-            <form class="formulario" th:action="@{/articulo/modificar/__${articulo.idArticulo}__}" method="POST" enctype="multipart/form-data">
-                <input hidden th:value="${articulo.idArticulo}" name="idArticulo">
-                <div th:replace="~{fragments/mensajeEE :: div}"></div>
+        
+        <div th:replace="~{fragments/mensajeEE :: div}" class="mt-3"></div>
+    
+        <main class="container d-flex justify-content-center align-items-center flex-grow-1">
+            <div class="card shadow-lg p-4 w-100" style="max-width: 500px;">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Actualizar Artículo</h3>
+                    
+                    <form class="formulario" th:action="@{/articulo/modificar/__${articulo.idArticulo}__}" method="POST" enctype="multipart/form-data">
+                        <input hidden th:value="${articulo.idArticulo}" name="idArticulo">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nombre</label> 
+                            <input th:value="${articulo.nombreArticulo}" type="text" class="form-control" name="nombreArticulo" placeholder="Ingrese el nombre del artículo" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Descripción</label> 
+                            <input th:value="${articulo.descripcionArticulo}" type="text" class="form-control" name="descripcionArticulo" placeholder="Ingrese la descripción del artículo" required>
+                        </div>
 
-                <div class="form-group my-3">
-                    <label class="mb-2">Modificar Artículo</label> 
-                    <input th:value="${articulo.nombreArticulo}" type="text" class="form-control" name="nombreArticulo" placeholder="Nombre Artículo">
-                </div>
-                <div class="form-group my-3">
-                    <label class="mb-2">Descripción</label> 
-                    <input th:value="${articulo.descripcionArticulo}" type="text" class="form-control" name="descripcionArticulo" placeholder="Descripción Artículo">
-                </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Imagen del artículo</label>
+                            <input type="file" class="form-control" name="archivo">
+                        </div>
+                        
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Seleccione Fábrica</label>
+                            <select class="form-select" name="idFabrica" required>
+                                <option value="">Seleccione una fábrica</option>
+                                <th:block th:each="fabrica : ${fabricas}">
+                                    <option th:value="${fabrica.idFabrica}" th:selected="${fabrica.idFabrica == fabricaSeleccionada}">
+                                        [[${fabrica.nombreFabrica}]]
+                                    </option>
+                                </th:block>
+                            </select>
+                        </div>
 
-                <div class="form-group my-3">
-                    <input type="file" class="form-control" name="archivo" >
-                </div>
-                
-                <div class="form-group my-3">
-                    <!-- th:selected lo vamos a usar para que nos mantenga la selección de fabrica que ya tenía -->
-                    <select name="idFabrica">
-                        <option value="">Seleccione Fábrica</option>
-                        <th:block th:each="fabrica : ${fabricas}">
-                            <option th:value="${fabrica.idFabrica}" th:selected="${fabrica.idFabrica == fabricaSeleccionada}">
-                                [[${fabrica.nombreFabrica}]]
-                            </option>
-                        </th:block>
-                    </select>
-                </div>
-               
-                <button type="submit" class="btn btn-primary mt-3 botones">Actualizar</button>
-            </form>
+                        
+                        <button type="submit" class="btn btn-primary w-100">Actualizar</button>
+                    </form>
 
-            <section class=" text-center container">
-                <div class="row mt-3">
-                    <div class="divVolver">
-                        <a th:href="@{/inicio}" class="btn btn-secondary my-2 botonVolver botones">Volver</a>
+                    <div class="text-center mt-3">
+                        <a th:href="@{/inicio}" class="btn btn-secondary w-100">Volver</a>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </main>
 
         <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" 
+                integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" 
+                crossorigin="anonymous"></script>
     </body>
 </html>

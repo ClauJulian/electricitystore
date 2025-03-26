@@ -1,5 +1,6 @@
 package com.claujulian.electricity.controladores;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -43,12 +44,13 @@ public class ArticuloControlador {
         try {
             articuloServicio.crearArticulo(archivo, nombreArticulo, descripcionArticulo, idFabrica);
             model.addAttribute("exito", "¡El artículo se ha creado con exito!");
+            return "redirect:/inicio";
         } catch (MiException me) {
             model.addAttribute("error", "¡El articulo debe tener un nombre!");
             Logger.getLogger(ArticuloControlador.class.getName()).log(Level.SEVERE, null, me);
             return "articulo_form.html";
         }
-        return "inicio.html";
+        
     }
 
     @GetMapping("/lista")
@@ -73,7 +75,7 @@ public class ArticuloControlador {
 
 
     @PostMapping("/modificar/{idArticulo}")
-    public String modificar(MultipartFile archivo, @PathVariable UUID idArticulo, String nombreArticulo, String descripcionArticulo, UUID idFabrica, ModelMap modelo) throws MiException {
+    public String modificar(MultipartFile archivo, @PathVariable UUID idArticulo, String nombreArticulo, String descripcionArticulo, UUID idFabrica, ModelMap modelo) throws MiException{
         try {
             if (idArticulo == null || idFabrica == null) {
                 throw new MiException("Debe seleccionar un artículo y una fábrica válidos.");

@@ -36,12 +36,12 @@ public class FabricaControlador {
         try {
             fabricaServicio.crearFabrica(nombre);
             model.addAttribute("exito", "¡La Fabrica se ha creado con exito!");
+            return "redirect:/inicio";
         } catch (MiException me) {
             model.addAttribute("error", "¡La Fabrica debe tener un nombre!");
             Logger.getLogger(FabricaControlador.class.getName()).log(Level.SEVERE, null, me);
             return "fabrica_form.html";
         }
-        return "inicio.html";
     }
 
     @GetMapping("/lista")
