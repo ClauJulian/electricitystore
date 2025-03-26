@@ -26,12 +26,12 @@
                                 <td th:text="${usuario.apellido}"></td>
                                 <td th:text="${usuario.rol}"></td>
                                 <td>
-                                    <a th:href="@{/admin/modificarRol/__${usuario.id}__}" class="btn btn-warning btn-sm">
+                                    <a th:href="@{/admin/modificarRol/__${usuario.id}__}" class="btn btn-info btn-sm">
                                         <i class="fas fa-exchange-alt"></i> Cambiar
                                     </a>
                                 </td>
                                 <td>
-                                    <a th:href="@{/admin/usuario/{id}(id=${usuario.id})}" class="btn btn-info btn-sm">
+                                    <a th:href="@{/admin/usuario/{id}(id=${usuario.id})}" class="btn btn-warning btn-sm">
                                         <i class="fas fa-edit"></i> Modificar
                                     </a>
                                 </td>
