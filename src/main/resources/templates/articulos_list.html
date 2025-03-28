@@ -4,6 +4,7 @@
 
     <body>
         <nav th:replace="~{fragments/navbar :: nav}"></nav>
+        <div th:replace="~{fragments/mensajeEE :: div}" class="mt-3"></div>
         <div class="container my-5">
             
             <div class="table-responsive">
@@ -43,8 +44,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <div th:replace="~{fragments/mensajeEE :: div}" class="mt-3"></div>
 
             <div class="text-center mt-4">
                 <a th:href="@{/inicio}" class="btn btn-primary">Volver</a>

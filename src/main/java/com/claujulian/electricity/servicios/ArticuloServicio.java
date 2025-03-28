@@ -44,8 +44,10 @@ public class ArticuloServicio {
 // CREATE
 @Transactional
 public void crearArticulo(MultipartFile archivo, String nombre, String descripcion, String idFabrica) throws MiException {
+    
+    validar(nombre, descripcion, idFabrica);
+
     UUID id_fabrica = UUID.fromString(idFabrica);
-    validar(nombre, descripcion, id_fabrica);
     Fabrica fabrica = fabricaServicio.buscarPorUUID(id_fabrica);
    
     Articulo articulo = new Articulo();
@@ -70,6 +72,10 @@ public void modificarArticulo(MultipartFile archivo, UUID idArticulo,String nomb
 
    if(articuloAActualizar.isPresent()){
    
+    String id_fabrica = idFabrica.toString();
+
+    validar(nombreArticulo,descripcionArticulo,id_fabrica);
+
     articuloAActualizar.get().setNombreArticulo(nombreArticulo);
     articuloAActualizar.get().setDescripcionArticulo(descripcionArticulo);
     articuloAActualizar.get().setFabrica(fabricaServicio.buscarPorUUID(idFabrica));
@@ -103,16 +109,17 @@ public void modificarArticulo(MultipartFile archivo, UUID idArticulo,String nomb
     }
     
     // EXTRAS
-    private void validar(String nombre, String descripcion, UUID idFabrica) throws MiException{
+    private void validar(String nombre, String descripcion, String idFabrica) throws MiException{
         if (nombre.isEmpty() || nombre == null) {
             throw new MiException("El nombre del artículo no puede estar vacio o ser nulo!");
         }
         if (descripcion.isEmpty() || descripcion == null) {
             throw new MiException("La descripcion del artículo no puede estar vacio o ser nulo!");
         }
-        if (idFabrica == null) {
-            throw new MiException("El id de la fabrica no puede ser nulo");
+        if (idFabrica.isEmpty()||idFabrica == null) {
+            throw new MiException("El id de la fabrica no puede estar vacio o ser nulo");
         }
+        
     }
 
 

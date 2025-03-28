@@ -16,12 +16,12 @@
                         <input hidden th:value="${articulo.idArticulo}" name="idArticulo">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Nombre</label> 
-                            <input th:value="${articulo.nombreArticulo}" type="text" class="form-control" name="nombreArticulo" placeholder="Ingrese el nombre del artículo" required>
+                            <input th:value="${articulo.nombreArticulo}" type="text" class="form-control" name="nombreArticulo" placeholder="Ingrese el nombre del artículo">
                         </div>
                         
                         <div class="mb-3">
                             <label class="form-label fw-bold">Descripción</label> 
-                            <input th:value="${articulo.descripcionArticulo}" type="text" class="form-control" name="descripcionArticulo" placeholder="Ingrese la descripción del artículo" required>
+                            <input th:value="${articulo.descripcionArticulo}" type="text" class="form-control" name="descripcionArticulo" placeholder="Ingrese la descripción del artículo">
                         </div>
 
                         
@@ -33,7 +33,7 @@
                         
                         <div class="mb-3">
                             <label class="form-label fw-bold">Seleccione Fábrica</label>
-                            <select class="form-select" name="idFabrica" required>
+                            <select class="form-select" name="idFabrica">
                                 <option value="">Seleccione una fábrica</option>
                                 <th:block th:each="fabrica : ${fabricas}">
                                     <option th:value="${fabrica.idFabrica}" th:selected="${fabrica.idFabrica == fabricaSeleccionada}">

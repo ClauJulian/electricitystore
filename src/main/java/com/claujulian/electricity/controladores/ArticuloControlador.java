@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.claujulian.electricity.entidades.Articulo;
 import com.claujulian.electricity.entidades.Fabrica;
@@ -40,15 +41,15 @@ public class ArticuloControlador {
     }
 
     @PostMapping("/registro")
-    public String registro(MultipartFile archivo , @RequestParam String nombreArticulo, @RequestParam String descripcionArticulo, @RequestParam String idFabrica,  ModelMap model) {
+    public String registro(MultipartFile archivo , @RequestParam String nombreArticulo, @RequestParam String descripcionArticulo, @RequestParam(required = false) String idFabrica,  ModelMap model, RedirectAttributes redirect) {
         try {
             articuloServicio.crearArticulo(archivo, nombreArticulo, descripcionArticulo, idFabrica);
             model.addAttribute("exito", "¡El artículo se ha creado con exito!");
-            return "redirect:/inicio";
-        } catch (MiException me) {
-            model.addAttribute("error", "¡El articulo debe tener un nombre!");
-            Logger.getLogger(ArticuloControlador.class.getName()).log(Level.SEVERE, null, me);
             return "articulo_form.html";
+        } catch (MiException me) {
+            redirect.addFlashAttribute("error", me.getMessage());
+            Logger.getLogger(ArticuloControlador.class.getName()).log(Level.SEVERE, null, me);
+            return "redirect:./registrar";
         }
         
     }
@@ -75,18 +76,19 @@ public class ArticuloControlador {
 
 
     @PostMapping("/modificar/{idArticulo}")
-    public String modificar(MultipartFile archivo, @PathVariable UUID idArticulo, String nombreArticulo, String descripcionArticulo, UUID idFabrica, ModelMap modelo) throws MiException{
+    public String modificar(MultipartFile archivo, @PathVariable UUID idArticulo, String nombreArticulo, String descripcionArticulo, UUID idFabrica, ModelMap modelo, RedirectAttributes redirect) throws MiException{
         try {
             if (idArticulo == null || idFabrica == null) {
                 throw new MiException("Debe seleccionar un artículo y una fábrica válidos.");
             }
 
             articuloServicio.modificarArticulo(archivo, idArticulo, nombreArticulo, descripcionArticulo, idFabrica);
+            redirect.addFlashAttribute("exito", "El artículo se ha modificado exitosamente.");
             return "redirect:../lista";
 
         } catch(MiException ex) {
-            modelo.put("error", ex.getMessage());
-            return "articulo_modificar.html";
+            redirect.addFlashAttribute("error", ex.getMessage());
+            return "redirect:../lista";
         }
     }
 
