@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.exceptions.TemplateInputException;
 
 import com.claujulian.electricity.entidades.Fabrica;
 import com.claujulian.electricity.excepciones.MiException;
@@ -27,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class FabricaControlador {
 
     private final FabricaServicio fabricaServicio;
-
     private static final Logger LOGGER = Logger.getLogger(FabricaControlador.class.getName());
 
 
@@ -51,33 +49,28 @@ public class FabricaControlador {
 
     @GetMapping("/lista")
     public String listar(ModelMap model) {
-
         List<Fabrica> fabricas = fabricaServicio.listarFabricas();
         model.addAttribute("fabricas", fabricas);
         return "fabricas_list.html";
     }
-
-     
-    
+ 
     @GetMapping("/modificar/{id}")
     public String modificar(@PathVariable UUID id, ModelMap model) {
         model.put("fabrica", fabricaServicio.buscarPorUUID(id));
         return "fabrica_modificar.html";
     }
 
-
     @PostMapping("/modificar/{id}")
     public String modificar(@PathVariable UUID id, String nombre, RedirectAttributes redirect){
         try {
-                fabricaServicio.modificarFabrica(nombre, id);
-                redirect.addFlashAttribute("exito", "La Fábrica fue modificada exitosamente.");    
-                return "redirect:../lista";
+            fabricaServicio.modificarFabrica(nombre, id);
+            redirect.addFlashAttribute("exito", "La Fábrica fue modificada exitosamente.");    
+            return "redirect:../lista";
             
         }  catch (MiException ex) {
             redirect.addFlashAttribute("error", ex.getMessage());
             return "redirect:../modificar/{id}";
         } 
-
     }
 
 }
