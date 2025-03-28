@@ -45,7 +45,7 @@ public class PortalControlador {
 
         try {
             usuarioServicio.registrar(nombre, apellido, email, password, password2);
-            modelo.put("exito", "El usuario se registro correctamente");
+            modelo.put("exito", "El usuario se registro correctamente.");
             modelo.put("nombre", nombre);
             modelo.put("apellido", apellido);
             modelo.put("email", email);

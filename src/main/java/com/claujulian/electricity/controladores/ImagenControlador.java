@@ -46,7 +46,7 @@ public class ImagenControlador {
     public ResponseEntity<String> actualizarImagenArticulo(@PathVariable UUID id,
             @RequestParam("archivo") MultipartFile archivo) {
         try {
-// Llamada al servicio para guardar la imagen
+    // Llamada al servicio para guardar la imagen
             imagenServicio.actualizar(archivo, id);
             return new ResponseEntity<>("Imagen actualizada exitosamente",
                     HttpStatus.OK);

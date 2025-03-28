@@ -34,9 +34,10 @@ public class FabricaServicio {
   // UPDATE
     @Transactional
     public void modificarFabrica(String nombreFabrica, UUID idFabrica) throws MiException{
-        validar(nombreFabrica);
+        
         Optional<Fabrica> respuesta = fabricaRepositorio.findById(idFabrica);
-
+        validar(nombreFabrica);
+        
         if (respuesta.isPresent()) {
             Fabrica fabrica = respuesta.get();
             fabrica.setNombreFabrica(nombreFabrica);
@@ -63,7 +64,7 @@ public class FabricaServicio {
      // EXTRAS
     private void validar(String nombreFabrica) throws MiException{
         if (nombreFabrica.isEmpty() || nombreFabrica == null) {
-            throw new MiException("El nombre de la fabrica no puede estar vacio o ser nulo!");
+            throw new MiException("El nombre de la fábrica no puede estar vacio o ser nulo!");
         }
        
     }

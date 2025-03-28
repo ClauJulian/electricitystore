@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.exceptions.TemplateInputException;
 
 import com.claujulian.electricity.entidades.Fabrica;
 import com.claujulian.electricity.excepciones.MiException;
@@ -26,6 +28,9 @@ public class FabricaControlador {
 
     private final FabricaServicio fabricaServicio;
 
+    private static final Logger LOGGER = Logger.getLogger(FabricaControlador.class.getName());
+
+
     @GetMapping("/registrar")
     public String registrar() {
         return "fabrica_form.html";
@@ -35,42 +40,44 @@ public class FabricaControlador {
     public String registro(@RequestParam String nombre, ModelMap model) {
         try {
             fabricaServicio.crearFabrica(nombre);
-            model.addAttribute("exito", "¡La Fabrica se ha creado con exito!");
-            return "redirect:/inicio";
+            model.addAttribute("exito", "¡La Fábrica se ha creado con exito!");
+            return "fabrica_form.html";
         } catch (MiException me) {
-            model.addAttribute("error", "¡La Fabrica debe tener un nombre!");
-            Logger.getLogger(FabricaControlador.class.getName()).log(Level.SEVERE, null, me);
+            model.addAttribute("error", "¡Fábrica debe tener un nombre!");
+            LOGGER.log(Level.SEVERE, "Fábrica debe tener un nombre.", me);
             return "fabrica_form.html";
         }
     }
 
     @GetMapping("/lista")
-    public String listar(ModelMap modelo) {
+    public String listar(ModelMap model) {
 
         List<Fabrica> fabricas = fabricaServicio.listarFabricas();
-        modelo.addAttribute("fabricas", fabricas);
+        model.addAttribute("fabricas", fabricas);
         return "fabricas_list.html";
     }
 
      
     
     @GetMapping("/modificar/{id}")
-    public String modificar(@PathVariable UUID id, ModelMap modelo) {
-        modelo.put("fabrica", fabricaServicio.buscarPorUUID(id));
+    public String modificar(@PathVariable UUID id, ModelMap model) {
+        model.put("fabrica", fabricaServicio.buscarPorUUID(id));
         return "fabrica_modificar.html";
     }
 
 
     @PostMapping("/modificar/{id}")
-    public String modificar(@PathVariable UUID id, String nombre, ModelMap modelo) {
+    public String modificar(@PathVariable UUID id, String nombre, RedirectAttributes redirect){
         try {
-            fabricaServicio.modificarFabrica(nombre, id);
+                fabricaServicio.modificarFabrica(nombre, id);
+                redirect.addFlashAttribute("exito", "La Fábrica fue modificada exitosamente.");    
+                return "redirect:../lista";
+            
+        }  catch (MiException ex) {
+            redirect.addFlashAttribute("error", ex.getMessage());
+            return "redirect:../modificar/{id}";
+        } 
 
-            return "redirect:../lista";
-        } catch (MiException ex) {
-            modelo.put("error", ex.getMessage());
-            return "fabrica_modificar.html";
-        }
     }
 
 }
