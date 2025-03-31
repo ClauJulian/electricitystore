@@ -28,7 +28,7 @@ El sistema implementa seguridad con **Spring Security**, gestionando el acceso s
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+   git clone https://github.com/ClauJulian/electricitystore.git
    ```
 2. **Configurar la base de datos:**
    - Crear una base de datos llamada `electricity` en MySQL.
